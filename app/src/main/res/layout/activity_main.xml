@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:gravity="center_horizontal"
+    tools:context=".MainActivity">
+
+    <com.clc.psv.PageScrollView
+        android:id="@+id/psv_pages"
+        android:layout_width="1000px"
+        android:layout_height="500px"
+        android:background="#C9C6C6">
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="300px"
+            android:layout_marginTop="100px">
+
+            <TextView
+                android:layout_width="800px"
+                android:layout_height="match_parent"
+                android:text="1"
+                android:textSize="100px"
+                android:background="#3F51B5"
+                android:gravity="center"
+                android:layout_marginHorizontal="100px" />
+
+            <TextView
+                android:layout_width="800px"
+                android:layout_height="match_parent"
+                android:text="2"
+                android:textSize="100px"
+                android:background="#3F51B5"
+                android:gravity="center"
+                android:layout_marginHorizontal="100px" />
+
+            <TextView
+                android:layout_width="800px"
+                android:layout_height="match_parent"
+                android:text="3"
+                android:textSize="100px"
+                android:background="#3F51B5"
+                android:gravity="center"
+                android:layout_marginHorizontal="100px" />
+
+            <TextView
+                android:layout_width="800px"
+                android:layout_height="match_parent"
+                android:text="4"
+                android:textSize="100px"
+                android:background="#3F51B5"
+                android:gravity="center"
+                android:layout_marginHorizontal="100px" />
+
+            <TextView
+                android:layout_width="800px"
+                android:layout_height="match_parent"
+                android:text="5"
+                android:textSize="100px"
+                android:background="#3F51B5"
+                android:gravity="center"
+                android:layout_marginHorizontal="100px" />
+
+            <TextView
+                android:layout_width="800px"
+                android:layout_height="match_parent"
+                android:text="6"
+                android:textSize="100px"
+                android:background="#3F51B5"
+                android:gravity="center"
+                android:layout_marginHorizontal="100px" />
+
+        </LinearLayout>
+
+    </com.clc.psv.PageScrollView>
+
+    <TextView
+        android:id="@+id/tv_page_num"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="30px" />
+
+    <Button
+        android:id="@+id/btn_back_one"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="返回第一页" />
+
+</LinearLayout>
