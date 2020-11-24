@@ -2,15 +2,20 @@ package com.clc.psv;
 
 import android.content.Context;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.MotionEvent;
 import android.widget.HorizontalScrollView;
 import android.widget.Scroller;
 
 public class PageScrollView extends HorizontalScrollView {
+    private static final String TAG = "PageScrollView";
     public static final int PAGE_WIDTH = 1000;
     public static final int DISTANCE_LIMIT = 300;
+    public static final float SCROLL_CRITICAL_SPEED = 1000f;
+    private static final int TO_SECOND = 1000;
     private Scroller mScroller;
     private int mDownX;
+    private long mDownTime;
     private PageChangedListener mPageChangedListener;
 
     public void setPageChangedListener(PageChangedListener pageChangedListener) {
@@ -40,6 +45,7 @@ public class PageScrollView extends HorizontalScrollView {
          */
         if (event.getAction() == MotionEvent.ACTION_DOWN) {
             mDownX = getScrollX();
+            mDownTime = System.currentTimeMillis();
         }
         if (event.getAction() == MotionEvent.ACTION_UP) {
             int currX = getScrollX();
@@ -71,16 +77,25 @@ public class PageScrollView extends HorizontalScrollView {
     private int findFinalX(int currX) {
         int remainder = currX % PAGE_WIDTH;
         int multiple = currX / PAGE_WIDTH;
-        if (remainder < DISTANCE_LIMIT) {
-            return PAGE_WIDTH * multiple;
-        } else if (remainder > PAGE_WIDTH - DISTANCE_LIMIT) {
+        float speed = (currX - mDownX) * TO_SECOND / (System.currentTimeMillis() - mDownTime);
+        Log.d(TAG, "scroll speed = " + speed);
+        if (speed < SCROLL_CRITICAL_SPEED && speed > -SCROLL_CRITICAL_SPEED) {
+            //滑动速度慢，才会判断距离
+            if (remainder < DISTANCE_LIMIT) {
+                return PAGE_WIDTH * multiple;
+            }
+            if (remainder > PAGE_WIDTH - DISTANCE_LIMIT) {
+                return PAGE_WIDTH * (multiple + 1);
+            }
+        }
+
+        /**
+         * 滑动速度快，直接走以下步骤
+         */
+        if (currX > mDownX) {
             return PAGE_WIDTH * (multiple + 1);
         } else {
-            if (currX > mDownX) {
-                return PAGE_WIDTH * (multiple + 1);
-            } else {
-                return PAGE_WIDTH * (multiple);
-            }
+            return PAGE_WIDTH * (multiple);
         }
     }
 
