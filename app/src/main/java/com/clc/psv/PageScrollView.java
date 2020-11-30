@@ -39,22 +39,26 @@ public class PageScrollView extends HorizontalScrollView {
 
     @Override
     public boolean onTouchEvent(MotionEvent event) {
-        /**
-         * 记录mDownX，以判断滑动方向
-         * 如果滑动临界是页宽的一半，不用记录mDownX
-         */
-        if (event.getAction() == MotionEvent.ACTION_DOWN) {
-            mDownX = getScrollX();
-            mDownTime = System.currentTimeMillis();
-        }
-        if (event.getAction() == MotionEvent.ACTION_UP) {
-            int currX = getScrollX();
-            int finalX = findFinalX(currX);
-            mScroller.startScroll(currX, 0, finalX - currX, 0);
-            invalidate();
-            if (mPageChangedListener != null) {
-                mPageChangedListener.onPageChanged(finalX / PAGE_WIDTH + 1);
-            }
+        switch (event.getAction()) {
+            case MotionEvent.ACTION_DOWN:
+                /**
+                 * 记录mDownX，以判断滑动方向
+                 * 如果滑动临界是页宽的一半，不用记录mDownX
+                 */
+                mDownX = getScrollX();
+                mDownTime = System.currentTimeMillis();
+                break;
+            case MotionEvent.ACTION_UP:
+                int currX = getScrollX();
+                int finalX = findFinalX(currX);
+                mScroller.startScroll(currX, 0, finalX - currX, 0);
+                invalidate();
+                if (mPageChangedListener != null) {
+                    mPageChangedListener.onPageChanged(finalX / PAGE_WIDTH + 1);
+                }
+                break;
+            default:
+                // Do nothing.
         }
         return super.onTouchEvent(event);
     }
