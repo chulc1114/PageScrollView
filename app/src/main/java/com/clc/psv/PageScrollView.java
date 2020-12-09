@@ -13,7 +13,6 @@ public class PageScrollView extends HorizontalScrollView {
     public static final int DISTANCE_LIMIT = 300;
     public static final float SCROLL_CRITICAL_SPEED = 1000f;
     private static final int TO_SECOND = 1000;
-    private Scroller mScroller;
     private int mDownX;
     private long mDownTime;
     private PageChangedListener mPageChangedListener;
@@ -24,12 +23,10 @@ public class PageScrollView extends HorizontalScrollView {
 
     public PageScrollView(Context context) {
         super(context);
-        mScroller = new Scroller(context);
     }
 
     public PageScrollView(Context context, AttributeSet attrs) {
         super(context, attrs);
-        mScroller = new Scroller(context);
     }
 
     @Override
@@ -51,8 +48,9 @@ public class PageScrollView extends HorizontalScrollView {
             case MotionEvent.ACTION_UP:
                 int currX = getScrollX();
                 int finalX = findFinalX(currX);
-                mScroller.startScroll(currX, 0, finalX - currX, 0);
-                invalidate();
+
+                //直接调用smoothScrollTo(),没有效果
+                this.post(() -> smoothScrollTo(finalX, 0));
                 if (mPageChangedListener != null) {
                     mPageChangedListener.onPageChanged(finalX / PAGE_WIDTH + 1);
                 }
@@ -100,14 +98,6 @@ public class PageScrollView extends HorizontalScrollView {
             return PAGE_WIDTH * (multiple + 1);
         } else {
             return PAGE_WIDTH * (multiple);
-        }
-    }
-
-    @Override
-    public void computeScroll() {
-        if (mScroller.computeScrollOffset()) {
-            scrollTo(mScroller.getCurrX(), 0);
-            invalidate();
         }
     }
 
